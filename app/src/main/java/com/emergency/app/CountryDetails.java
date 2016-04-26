@@ -3,28 +3,29 @@ package com.emergency.app;
 /**
  * Created by Younas on 4/26/2016.
  */
-public class Contact {
+public class CountryDetails {
 
     //private variables
     int _id;
     String _name;
-    String _phone_number;
+    String _amb_phone_number;
+    String _pol_phone_number;
 
     // Empty constructor
-    public Contact(){
+    public CountryDetails(){
 
     }
     // constructor
-    public Contact(int id, String name, String _phone_number){
+    public CountryDetails(int id, String name, String _phone_number){
         this._id = id;
         this._name = name;
-        this._phone_number = _phone_number;
+        this._amb_phone_number = _phone_number;
     }
 
     // constructor
-    public Contact(String name, String _phone_number){
+    public CountryDetails(String name, String _phone_number){
         this._name = name;
-        this._phone_number = _phone_number;
+        this._amb_phone_number = _phone_number;
     }
     // getting ID
     public int getID(){
@@ -47,12 +48,12 @@ public class Contact {
     }
 
     // getting phone number
-    public String getPhoneNumber(){
-        return this._phone_number;
+    public String getAMbPhoneNumber(){
+        return this._amb_phone_number;
     }
 
     // setting phone number
-    public void setPhoneNumber(String phone_number){
-        this._phone_number = phone_number;
+    public void setAMbPhoneNumber(String phone_number){
+        this._amb_phone_number = phone_number;
     }
 }

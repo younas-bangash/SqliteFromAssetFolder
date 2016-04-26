@@ -3,6 +3,13 @@ package com.emergency.app;
 /**
  * Created by Younas on 4/26/2016.
  */
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,13 +17,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class AssetDatabaseOpenHelper extends SQLiteOpenHelper
 {
@@ -82,8 +82,8 @@ public class AssetDatabaseOpenHelper extends SQLiteOpenHelper
 
     }
 
-    public List<Contact> getAllCountryRecord() {
-        List<Contact> contactList = new ArrayList<Contact>();
+    public List<CountryDetails> getAllCountryRecord() {
+        List<CountryDetails> contactList = new ArrayList<CountryDetails>();
         // Select All Query
         String selectQuery = "SELECT  * FROM call";
 
@@ -94,12 +94,11 @@ public class AssetDatabaseOpenHelper extends SQLiteOpenHelper
         //id country ambulance fire police
         if (cursor.moveToFirst()) {
             do {
-                Contact contact = new Contact();
-                contact.setID(Integer.parseInt(cursor.getString(0)));
-                contact.setName(cursor.getString(1));
-                contact.setPhoneNumber(cursor.getString(2));
+                CountryDetails contact = new CountryDetails();
+                contact.setID(Integer.parseInt(cursor.getString(0)));// primary key
+                contact.setName(cursor.getString(1)); // country name
+                contact.setAMbPhoneNumber(cursor.getString(2)); //ambulance number
                 // Adding contact to list
-                Log.d(TAG,cursor.getString(1));
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }

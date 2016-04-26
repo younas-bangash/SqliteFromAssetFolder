@@ -1,16 +1,17 @@
 package com.emergency.app;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.emergency.app.DummyContent.DummyItem;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -19,6 +20,7 @@ import com.emergency.app.DummyContent.DummyItem;
  * interface.
  */
 public class list_Fragment extends Fragment {
+    public static List<CountryDetails> mCountries=new ArrayList<>();
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -53,20 +55,27 @@ public class list_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_activity, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            AssetDatabaseOpenHelper myDbHelper = new AssetDatabaseOpenHelper(context);
+            try {
+                myDbHelper.createDataBase();
+                myDbHelper.openDataBase();
+                mCountries=myDbHelper.getAllCountryRecord();
+
+            }catch(SQLException sqle){
+
+                throw sqle;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            recyclerView.setAdapter(new MylistRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
+            recyclerView.setAdapter(new MylistRecyclerViewAdapter(mCountries, mListener));
         }
         return view;
     }
@@ -101,6 +110,6 @@ public class list_Fragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(CountryDetails item);
     }
 }

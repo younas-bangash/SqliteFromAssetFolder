@@ -1,40 +1,41 @@
 package com.emergency.app;
 
-import android.database.SQLException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
-import java.io.IOException;
+public class MainActivity extends AppCompatActivity implements list_Fragment.OnListFragmentInteractionListener{
 
-public class MainActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*
-        *         getFragmentManager().beginTransaction()
-                    .add(R.id.container, new VerifyPhoneFragment())
-                    .commit();
-        * */
+
+        list_Fragment mProjectFragment = new list_Fragment();
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, mProjectFragment).commit();
 
 
-        AssetDatabaseOpenHelper myDbHelper = new AssetDatabaseOpenHelper(getApplicationContext());
-       // AssetDatabaseOpenHelper myDbHelper = new AssetDatabaseOpenHelper(this);
+    }
 
+    @Override
+    public void onListFragmentInteraction(CountryDetails item) {
+        ShowAlertDialogBox(item);
 
-        try {
-            myDbHelper.createDataBase();
-            myDbHelper.openDataBase();
-            myDbHelper.getAllCountryRecord();
+    }
 
-      }catch(SQLException sqle){
-
-            throw sqle;
-      } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private void ShowAlertDialogBox(CountryDetails item) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.alert_dialog, null);
+        dialogBuilder.setView(dialogView);
+        TextView editText = (TextView) dialogView.findViewById(R.id.ambulance);
+        editText.setText(item.getAMbPhoneNumber());
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
     }
 }
